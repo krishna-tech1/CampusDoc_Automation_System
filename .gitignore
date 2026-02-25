@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+.eslintcache
+
+# Document outputs
+backend/app/generated/*.docx
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
