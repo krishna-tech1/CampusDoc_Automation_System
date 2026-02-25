@@ -7,6 +7,9 @@ import os
 # Create DB tables
 Base.metadata.create_all(bind=engine)
 
+# Ensure generated directory exists
+os.makedirs("app/generated", exist_ok=True)
+
 app = FastAPI(title="College Document Automation System")
 
 # CORS Configuration
