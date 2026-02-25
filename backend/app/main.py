@@ -12,23 +12,34 @@ Base.metadata.create_all(bind=engine)
 def auto_seed():
     db = SessionLocal()
     try:
-        user = db.query(models.User).filter(models.User.email == "admin@college.edu").first()
-        if not user:
-            admin_user = models.User(
+        # Check and Create/Update Admin
+        admin = db.query(models.User).filter(models.User.email == "admin@college.edu").first()
+        if not admin:
+            admin = models.User(
                 name="College Administrator",
                 email="admin@college.edu",
                 password=auth_utils.get_password_hash("admin123"),
                 role="admin"
             )
-            db.add(admin_user)
-            staff_user = models.User(
+            db.add(admin)
+        else:
+            # Force update password to 'admin123' if already exists
+            admin.password = auth_utils.get_password_hash("admin123")
+        
+        # Check and Create Staff
+        staff = db.query(models.User).filter(models.User.email == "staff@college.edu").first()
+        if not staff:
+            staff = models.User(
                 name="Staff Member",
                 email="staff@college.edu",
                 password=auth_utils.get_password_hash("staff123"),
                 role="staff"
             )
-            db.add(staff_user)
-            db.commit()
+            db.add(staff)
+        
+        db.commit()
+    except Exception as e:
+        print(f"Seeding error: {e}")
     finally:
         db.close()
 
