@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api, { API_BASE_URL } from '../utils/api';
 import { History as HistoryIcon, Download, Search, FileText, FilePlus, ClipboardCheck } from 'lucide-react';
 
 const History = () => {
@@ -13,9 +13,7 @@ const History = () => {
 
     const fetchHistory = async () => {
         try {
-            const response = await axios.get('/api/documents/history', {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+            const response = await api.get('/documents/history');
             setDocs(response.data);
         } catch (err) {
             console.error('Error fetching history:', err);
@@ -25,7 +23,7 @@ const History = () => {
     };
 
     const handleDownload = (id) => {
-        window.open(`/api/documents/download/${id}?token=${localStorage.getItem('token')}`, '_blank');
+        window.open(`${API_BASE_URL}/documents/download/${id}?token=${localStorage.getItem('token')}`, '_blank');
     };
 
     const filteredDocs = docs.filter(doc =>

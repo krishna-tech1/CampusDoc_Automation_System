@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { Lock, Mail, Loader2 } from 'lucide-react';
 
 const Login = () => {
@@ -20,7 +20,7 @@ const Login = () => {
             formData.append('username', email);
             formData.append('password', password);
 
-            const response = await axios.post('/api/auth/login', formData);
+            const response = await api.post('/auth/login', formData);
             localStorage.setItem('token', response.data.access_token);
             navigate('/');
         } catch (err) {

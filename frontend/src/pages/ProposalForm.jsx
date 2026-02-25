@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api, { API_BASE_URL } from '../utils/api';
 import { FilePlus, Download, Loader2, CheckCircle2 } from 'lucide-react';
 
 const ProposalForm = () => {
@@ -19,9 +19,7 @@ const ProposalForm = () => {
         setLoading(true);
         setSuccess(null);
         try {
-            const response = await axios.post('/api/documents/generate/proposal', formData, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+            const response = await api.post('/documents/generate/proposal', formData);
             setSuccess(response.data);
         } catch (err) {
             alert('Error generating proposal: ' + (err.response?.data?.detail || err.message));
@@ -31,7 +29,7 @@ const ProposalForm = () => {
     };
 
     const handleDownload = () => {
-        window.open(`/api/documents/download/${success.document.id}?token=${localStorage.getItem('token')}`, '_blank');
+        window.open(`${API_BASE_URL}/documents/download/${success.document.id}?token=${localStorage.getItem('token')}`, '_blank');
     };
 
     return (
